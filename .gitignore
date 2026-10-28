@@ -9,3 +9,8 @@ local/
 openapi.json
 openapi.yaml
 vendor/
+
+# Local PHP compatibility test environment
+/composer.php85-tests.json
+/composer.php85-tests.lock
+/php85-test-logs/

@@ -21,7 +21,7 @@ class CleanUnmerged
         foreach ($analysis->annotations as $annotation) {
             if (property_exists($annotation, '_unmerged')) {
                 foreach ($annotation->_unmerged as $i => $item) {
-                    if ($merged->contains($item)) {
+                    if ($merged->offsetExists($item)) {
                         unset($annotation->_unmerged[$i]); // Property was merged
                     }
                 }

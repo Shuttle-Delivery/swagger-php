@@ -243,7 +243,7 @@ class AugmentPropertiesTest extends OpenApiTestCase
             'property' => 'arrayType',
             'type' => 'array',
         ]);
-        $this->assertObjectHasAttribute(
+        $this->assertObjectHasProperty(
             'ref',
             $arrayType->items
         );

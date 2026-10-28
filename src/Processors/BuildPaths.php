@@ -27,7 +27,7 @@ class BuildPaths
                     $annotation->_context->logger->warning($annotation->identity() . ' is missing required property "path" in ' . $annotation->_context);
                 } elseif (isset($paths[$annotation->path])) {
                     $paths[$annotation->path]->mergeProperties($annotation);
-                    $analysis->annotations->detach($annotation);
+                    $analysis->annotations->offsetUnset($annotation);
                 } else {
                     $paths[$annotation->path] = $annotation;
                 }
@@ -47,7 +47,7 @@ class BuildPaths
                             '_context' => new Context(['generated' => true], $operation->_context),
                         ]
                     );
-                    $analysis->annotations->attach($paths[$operation->path]);
+                    $analysis->annotations->offsetSet($paths[$operation->path]);
                 }
                 if ($paths[$operation->path]->merge([$operation])) {
                     $operation->_context->logger->warning('Unable to merge ' . $operation->identity() . ' in ' . $operation->_context);

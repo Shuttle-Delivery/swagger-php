@@ -77,7 +77,7 @@ class Analysis
      */
     private static $processors;
 
-    public function __construct(array $annotations = [], Context $context = null)
+    public function __construct(array $annotations = [], ?Context $context = null)
     {
         $this->annotations = new \SplObjectStorage();
         $this->context = $context;
@@ -87,7 +87,7 @@ class Analysis
 
     public function addAnnotation($annotation, ?Context $context): void
     {
-        if ($this->annotations->contains($annotation)) {
+        if ($this->annotations->offsetExists($annotation)) {
             return;
         }
         if ($annotation instanceof AbstractAnnotation) {
@@ -103,7 +103,7 @@ class Analysis
                 $context->annotations[] = $annotation;
             }
         }
-        $this->annotations->attach($annotation, $context);
+        $this->annotations->offsetSet($annotation, $context);
         $blacklist = property_exists($annotation, '_blacklist') ? $annotation::$_blacklist : [];
         foreach ($annotation as $property => $value) {
             if (in_array($property, $blacklist)) {
@@ -368,7 +368,7 @@ class Analysis
         if ($annotation instanceof AbstractAnnotation) {
             return $annotation->_context;
         }
-        if ($this->annotations->contains($annotation) === false) {
+        if ($this->annotations->offsetExists($annotation) === false) {
             throw new \Exception('Annotation not found');
         }
         $context = $this->annotations[$annotation];
@@ -415,8 +415,8 @@ class Analysis
         $result->merged = $this->merged();
         $result->unmerged = new Analysis([], $this->context);
         foreach ($this->annotations as $annotation) {
-            if ($result->merged->annotations->contains($annotation) === false) {
-                $result->unmerged->annotations->attach($annotation, $this->annotations[$annotation]);
+            if ($result->merged->annotations->offsetExists($annotation) === false) {
+                $result->unmerged->annotations->offsetSet($annotation, $this->annotations[$annotation]);
             }
         }
 
